@@ -115,6 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
         if not args:
             print("** class name missing **")
             return
@@ -225,6 +226,7 @@ class HBNBCommand(cmd.Cmd):
         count = 0
         for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
+            if args == k.split('.')[0]:
                 count += 1
         print(count)
 
@@ -321,4 +323,3 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
