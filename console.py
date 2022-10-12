@@ -2,7 +2,6 @@
 """ Console Module """
 import cmd
 import sys
-import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -116,44 +115,14 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-<<<<<<< HEAD
 
         if not args:
-=======
-        args_list = args.split(" ")
-
-        if not args_list[0]:
->>>>>>> ab2268f049b44065ba5c2d9509c3708e61acec94
             print("** class name missing **")
             return
-        elif args_list[0] not in HBNBCommand.classes:
+        elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        new_instance = HBNBCommand.classes[args_list[0]]()
-        for i in range(1, len(args_list)):
-            regex = r'(\S+)=(\S+)'
-            match = re.search(regex, args_list[i])
-
-            if not match:
-                continue
-            key = match.group(1)
-            value = match.group(2)
-            cast  = None
-            if not re.search('^".*"$', value):
-                if "." in value:
-                    cast = float
-                else:
-                    cast = int
-            else:
-                value = value.replace('"', '')
-                value  = value.replace('_', ' ')
-            if cast:
-                try:
-                    value = cast(value)
-                except ValueError:
-                    pass
-            setattr(new_instance, key, value)
+        new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -225,6 +194,40 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def help_destroy(self):
+        """ Help information for the destroy command """
+        print("Destroys an individual instance of a class")
+        print("[Usage]: destroy <className> <objectId>\n")
+
+    def do_all(self, args):
+        """ Shows all objects, or all objects of a class"""
+        print_list = []
+
+        if args:
+            args = args.split(' ')[0]  # remove possible trailing args
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            for k, v in storage._FileStorage__objects.items():
+                if k.split('.')[0] == args:
+                    print_list.append(str(v))
+        else:
+            for k, v in storage._FileStorage__objects.items():
+                print_list.append(str(v))
+
+        print(print_list)
+
+    def help_all(self):
+        """ Help information for the all command """
+        print("Shows all objects, or all of a class")
+        print("[Usage]: all <className>\n")
+
+    def do_count(self, args):
+        """Count current number of class instances"""
+        count = 0
+        for k, v in storage._FileStorage__objects.items():
+            if args == k.split('.')[0]:
+                count += 1
+            print(count)
         """ Help information for the destroy command """
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
@@ -354,3 +357,4 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
 if __name__ == "__main__":
+    HBNBCommand().cmdloop()
