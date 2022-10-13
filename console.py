@@ -225,8 +225,9 @@ class HBNBCommand(cmd.Cmd):
         """Count current number of class instances"""
         count = 0
         for k, v in storage._FileStorage__objects.items():
-            if args == k.split('.')[0]:
-            if args == k.split('.')[0]:
+        if args == k.split('.')[0]:
+        if args == k.split('.')[0]:
+        if args == k.split('.')[0]:
                 count += 1
             print(count)
         """ Help information for the destroy command """
@@ -243,7 +244,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+            if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
@@ -322,4 +323,3 @@ class HBNBCommand(cmd.Cmd):
             # check for quoted val arg
             if args[2] and args[2][0] is '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
-
